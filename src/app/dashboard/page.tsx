@@ -206,10 +206,12 @@ export default function Dashboard() {
                 {/* Header */}
                 <header
                     className="dash-header"
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    style={{ cursor: 'pointer' }}
                 >
-                    <div className="dash-header-left">
+                    <div
+                        className="dash-header-left"
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        style={{ cursor: 'pointer' }}
+                    >
                         <h1 className="dash-title">Submissions</h1>
                         <span className="dash-count">
                             {totalResults.toLocaleString()} {totalResults === 1 ? 'person' : 'people'}
