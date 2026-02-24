@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
 html {
-  scroll-behavior: smooth;
-  height: auto;
-  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 :root {
@@ -26,29 +24,28 @@ html {
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* html tag reset */
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg-dark);
   color: var(--text-primary);
   min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* ===== Animated Background ===== */
+.bg-animated,
+.bg-animated * {
+  pointer-events: none !important;
+}
+
 .bg-animated {
   position: fixed;
   inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
+  z-index: -1;
 }
 
 .bg-animated::before {
@@ -609,7 +606,6 @@ body {
   z-index: 10;
   min-height: 100vh;
   padding: 2rem 2rem 6rem;
-  -webkit-overflow-scrolling: touch;
   max-width: 1400px;
   margin: 0 auto;
 }
