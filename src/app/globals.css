@@ -1045,7 +1045,7 @@ body {
 /* ===== Dashboard Responsive ===== */
 @media (max-width: 768px) {
   .dash-container {
-    padding: 1.25rem 1rem 5rem;
+    padding: 3rem 1rem 5rem;
   }
 
   .dash-header {

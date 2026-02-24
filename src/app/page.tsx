@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 
 // ===== Types =====
 interface FormData {
@@ -312,6 +313,12 @@ export default function IntakeForm() {
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '1rem' }}>
                 Takes about 3 minutes to complete
               </p>
+
+              <div style={{ marginTop: '3rem', opacity: 0.5 }}>
+                <Link href="/dashboard" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textDecoration: 'none', letterSpacing: '0.05em' }}>
+                  DIAMOND PORTAL
+                </Link>
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
@@ -376,6 +383,12 @@ export default function IntakeForm() {
                 marginTop: '0.5rem',
               }}
             />
+
+            <div style={{ marginTop: '3rem', opacity: 0.5 }}>
+              <Link href="/dashboard" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textDecoration: 'none', letterSpacing: '0.05em' }}>
+                DIAMOND PORTAL
+              </Link>
+            </div>
           </motion.div>
         </div>
       </>
