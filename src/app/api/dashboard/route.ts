@@ -42,6 +42,43 @@ export async function GET(request: NextRequest) {
     }
 }
 
+export async function DELETE(request: NextRequest) {
+    try {
+        const authToken = request.headers.get('x-dashboard-key');
+        const dashboardKey = process.env.DASHBOARD_SECRET_KEY;
+
+        if (!dashboardKey || authToken !== dashboardKey) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get('id');
+
+        if (!id) {
+            return NextResponse.json({ error: 'Missing ID' }, { status: 400 });
+        }
+
+        const supabase = getSupabase();
+        const { error } = await supabase
+            .from('form_submissions')
+            .delete()
+            .eq('id', id);
+
+        if (error) {
+            console.error('Supabase delete error:', error);
+            return NextResponse.json({ error: 'Failed to delete submission' }, { status: 500 });
+        }
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error('Dashboard Delete API error:', error);
+        return NextResponse.json(
+            { error: 'Internal server error' },
+            { status: 500 }
+        );
+    }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function fallbackQuery(supabase: any, search: string, page: number, pageSize: number) {
     const offset = (page - 1) * pageSize;

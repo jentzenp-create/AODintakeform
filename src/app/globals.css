@@ -1042,9 +1042,55 @@ body {
 
 .dash-modal-footer {
   margin-top: 1.5rem;
-  padding-top: 1rem;
+  padding-top: 1.25rem;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dash-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.15rem;
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: 10px;
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dash-delete-btn:hover:not(:disabled) {
+  background: #ff6b6b;
+  color: white;
+  border-color: #ff6b6b;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+}
+
+.dash-delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dash-card-delete-icon {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.dash-card-delete-icon:hover {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
 }
 
 /* ===== Dashboard Responsive ===== */

@@ -16,3 +16,9 @@ CREATE POLICY "Allow authenticated reads" ON form_submissions
   FOR SELECT
   TO anon, authenticated
   USING (true);
+
+-- Allow deletion (protected by dashboard secret key in app logic)
+CREATE POLICY "Allow anonymous deletes" ON form_submissions
+  FOR DELETE
+  TO anon
+  USING (true);
