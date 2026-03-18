@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>March Madness Cookie Challenge | Acres of Diamonds</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue:       #5C9DD7;
+            --blue-light: #87BCE8;
+            --blue-dark:  #2E72B0;
+            --bg:         #090910;
+            --bg-card:    rgba(255,255,255,0.04);
+            --rule:       rgba(255,255,255,0.08);
+            --text:       #f0f0f0;
+            --text-2:     rgba(240,240,240,0.6);
+            --text-3:     rgba(240,240,240,0.35);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── GRAIN TEXTURE ─── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0.045;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+        }
+
+        /* ─── AMBIENT BACKGROUND ─── */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+        }
+
+        .orb-1 {
+            width: 900px; height: 900px;
+            background: radial-gradient(circle, rgba(92,157,215,0.28) 0%, transparent 65%);
+            top: -420px; right: -300px;
+            animation: drift1 30s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(46,114,176,0.2) 0%, transparent 65%);
+            bottom: -200px; left: -200px;
+            animation: drift2 36s ease-in-out infinite;
+        }
+
+        .orb-3 {
+            width: 350px; height: 350px;
+            background: radial-gradient(circle, rgba(92,157,215,0.12) 0%, transparent 65%);
+            top: 50%; left: 40%;
+            animation: drift3 24s ease-in-out infinite;
+        }
+
+        @keyframes drift1 {
+            0%,100% { transform: translate(0,0); }
+            40%  { transform: translate(-60px, 80px); }
+            70%  { transform: translate(40px,-40px); }
+        }
+        @keyframes drift2 {
+            0%,100% { transform: translate(0,0); }
+            35%  { transform: translate(80px,-60px); }
+            70%  { transform: translate(-30px, 50px); }
+        }
+        @keyframes drift3 {
+            0%,100% { transform: translate(0,0); }
+            50%  { transform: translate(-100px, 60px); }
+        }
+
+        .grid-lines {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%);
+        }
+
+        /* ─── LAYOUT ─── */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 5rem 2.5rem 6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 5rem;
+            align-items: center;
+            margin-bottom: 7rem;
+        }
+
+        /* Staggered load animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--blue);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            animation: slideRight 0.6s ease-out 0.15s both;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            display: block;
+            width: 32px;
+            height: 1px;
+            background: var(--blue);
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 7.5rem;
+            line-height: 0.92;
+            letter-spacing: 0.02em;
+            color: var(--text);
+            margin-bottom: 0.1em;
+            animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.25s both;
+        }
+
+        .h1-sub {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.6rem;
+            letter-spacing: 0.04em;
+            color: var(--blue);
+            display: block;
+            margin-bottom: 1.75rem;
+            animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.35s both;
+        }
+
+        .hero-tagline {
+            font-size: 1rem;
+            color: var(--text-2);
+            line-height: 1.75;
+            max-width: 420px;
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.6s ease-out 0.45s both;
+        }
+
+        .hero-tagline strong { color: var(--blue-light); font-weight: 600; }
+
+        /* ─── STEP FLOW ─── */
+        .step-flow {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 2.75rem;
+            animation: fadeUp 0.6s ease-out 0.55s both;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.1rem;
+            border: 1px solid rgba(92,157,215,0.22);
+            border-radius: 10px;
+            background: rgba(92,157,215,0.06);
+        }
+
+        .step-icon { font-size: 1.2rem; }
+
+        .step-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--blue-light);
+            white-space: nowrap;
+        }
+
+        .step-arrow {
+            font-size: 1rem;
+            color: var(--text-3);
+            padding: 0 0.5rem;
+        }
+
+        /* ─── BUTTON ─── */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--blue);
+            color: #fff;
+            padding: 1rem 2.25rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            box-shadow: 0 0 0 0 rgba(92,157,215,0.5);
+            transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+            animation: fadeUp 0.6s ease-out 0.65s both;
+            position: relative;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px rgba(92,157,215,0.4);
+        }
+
+        .btn-primary svg { transition: transform 0.25s ease; }
+        .btn-primary:hover svg { transform: translateX(4px); }
+
+        /* ─── HERO IMAGE ─── */
+        .hero-image-wrap {
+            position: relative;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .hero-image-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -30px -20px;
+            background: radial-gradient(ellipse at 60% 50%, rgba(92,157,215,0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-img {
+            width: 100%;
+            border-radius: 20px;
+            display: block;
+            position: relative;
+            box-shadow:
+                0 40px 100px rgba(0,0,0,0.7),
+                0 0 0 1px rgba(92,157,215,0.12),
+                inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+
+        /* ─── SECTION WRAPPER ─── */
+        .section-block {
+            margin-bottom: 3rem;
+        }
+
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-label::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: var(--blue);
+        }
+
+        .section-heading {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 0.03em;
+            line-height: 1;
+            color: var(--text);
+            margin-bottom: 2.5rem;
+        }
+
+        hr.rule {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 0 0 2.5rem;
+        }
+
+        /* ─── MECHANIC LAYOUT ─── */
+        .mechanic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .mechanic-box {
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-top: 2px solid var(--blue);
+            border-radius: 14px;
+            padding: 2rem;
+            font-size: 0.95rem;
+            color: var(--text-2);
+            line-height: 1.75;
+        }
+
+        .mechanic-box strong { color: var(--blue-light); font-weight: 600; }
+
+        .mechanic-note {
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-radius: 14px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-2);
+        }
+
+        .mechanic-note-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        /* ─── ROUNDS ─── */
+        .rounds-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--rule);
+            border: 1px solid var(--rule);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .round-card {
+            background: var(--bg);
+            padding: 1.75rem 1rem;
+            text-align: center;
+            transition: background 0.2s ease;
+        }
+
+        .round-card:hover { background: rgba(92,157,215,0.07); }
+
+        .round-emoji {
+            font-size: 2rem;
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+
+        .round-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.06em;
+            color: var(--blue-light);
+        }
+
+        /* ─── CAUSE CARDS ─── */
+        .causes-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .cause-card {
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-radius: 18px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            transition: background 0.25s ease, border-color 0.25s ease;
+        }
+
+        .cause-card:hover {
+            background: rgba(92,157,215,0.06);
+            border-color: rgba(92,157,215,0.25);
+        }
+
+        .cause-logo-panel {
+            border-right: 1px solid var(--rule);
+            background: #111118;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            min-height: 220px;
+        }
+
+        .cause-logo {
+            width: 100%;
+            height: auto;
+            max-height: 180px;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .cause-card:hover .cause-logo { transform: scale(1.04); }
+
+        .cause-body {
+            padding: 2.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        .cause-stat {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            line-height: 1;
+            color: var(--blue);
+            letter-spacing: 0.04em;
+            margin-bottom: 0.15em;
+        }
+
+        .cause-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+
+        .cause-desc {
+            font-size: 0.875rem;
+            color: var(--text-2);
+            line-height: 1.6;
+        }
+
+        /* ─── CLAIM SECTION ─── */
+        .claim-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .claim-box {
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-radius: 14px;
+            padding: 2rem;
+        }
+
+        .claim-box-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 0.75rem;
+        }
+
+        .claim-box p {
+            font-size: 0.95rem;
+            color: var(--text-2);
+            line-height: 1.75;
+        }
+
+        .claim-box strong { color: var(--text); }
+
+        .claim-why {
+            background: rgba(92,157,215,0.06);
+            border: 1px solid rgba(92,157,215,0.18);
+            border-radius: 14px;
+            padding: 2rem;
+        }
+
+        .claim-why .claim-box-label { color: var(--blue-light); }
+
+        /* ─── SKOOL MEMBERSHIP VISUAL ─── */
+        .skool-block {
+            margin-top: 2rem;
+            border: 1px solid var(--rule);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .skool-label {
+            padding: 1rem 1.75rem;
+            border-bottom: 1px solid var(--rule);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--blue);
+        }
+
+        .skool-img {
+            width: 100%;
+            display: block;
+        }
+
+        /* ─── FINAL CTA ─── */
+        .cta-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--rule);
+            border-radius: 24px;
+            margin-top: 1rem;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -120px; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 400px;
+            background: radial-gradient(ellipse at center, rgba(92,157,215,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-eyebrow {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            line-height: 0.95;
+            letter-spacing: 0.03em;
+            color: var(--text);
+            margin-bottom: 1.25rem;
+        }
+
+        .cta-sub {
+            font-size: 1rem;
+            color: var(--text-2);
+            margin-bottom: 2.75rem;
+            max-width: 440px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .campaign-tagline {
+            margin-top: 3rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-3);
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+
+        .campaign-tagline span {
+            color: var(--blue);
+            margin: 0 0.5rem;
+        }
+
+        /* ─── SCROLL REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── MOBILE ─── */
+        @media (max-width: 860px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .hero-image-wrap { max-width: 420px; margin: 0 auto; }
+            h1 { font-size: 5.5rem; }
+            .mechanic-grid { grid-template-columns: 1fr; }
+            .claim-layout { grid-template-columns: 1fr; }
+            .rounds-row { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 4rem; }
+            .h1-sub { font-size: 2.4rem; }
+            .section-heading { font-size: 2.5rem; }
+            h3 { font-size: 3.5rem; }
+            .container { padding: 3.5rem 1.25rem 5rem; }
+            .step-flow { flex-wrap: wrap; gap: 0.5rem; }
+            .step-arrow { display: none; }
+            .cause-card { grid-template-columns: 1fr; }
+            .cause-logo-panel {
+                border-right: none;
+                border-bottom: 1px solid var(--rule);
+                min-height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-layer">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-lines"></div>
+    </div>
+
+    <div class="container">
+
+        <!-- ─── HERO ─── -->
+        <section class="hero">
+            <div class="hero-text">
+                <p class="hero-eyebrow">Sweet 16 Tournament Challenge</p>
+                <h1>March<br>Madness</h1>
+                <span class="h1-sub">Cookie Challenge</span>
+                <p class="hero-tagline">It&rsquo;s tournament time, and we&rsquo;re making it a <strong>little sweeter</strong> this year&mdash;supporting great causes, one square at a time.</p>
+
+                <div class="step-flow">
+                    <div class="step">
+                        <span class="step-icon">🏀</span>
+                        <span class="step-label">Pick a Box</span>
+                    </div>
+                    <span class="step-arrow">&#8594;</span>
+                    <div class="step">
+                        <span class="step-icon">💙</span>
+                        <span class="step-label">Donate $100+</span>
+                    </div>
+                    <span class="step-arrow">&#8594;</span>
+                    <div class="step">
+                        <span class="step-icon">🍪</span>
+                        <span class="step-label">Win Cookies!</span>
+                    </div>
+                </div>
+
+                <a href="https://www.skool.com/ai-growth-society-6076/about" class="btn-primary">
+                    Grab Your Square
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="hero-image-wrap">
+                <img src="images/hero.png" alt="March Madness Cookie Challenge" class="hero-img">
+            </div>
+        </section>
+
+        <!-- ─── HOW IT WORKS ─── -->
+        <section class="section-block reveal">
+            <p class="section-label">The Rules</p>
+            <h2 class="section-heading">How It Works</h2>
+            <hr class="rule">
+
+            <div class="mechanic-grid">
+                <div class="mechanic-box">
+                    Just like Super Bowl squares&mdash;each square is assigned two digits. After every round, we look at the <strong>highest-scoring game</strong>. If the <strong>last digit of each team&rsquo;s final score</strong> matches your square, you win a <strong>box of Girl Scout Cookies</strong> delivered to you.
+                </div>
+                <div class="mechanic-note">
+                    <span class="mechanic-note-icon">🎲</span>
+                    <p>No basketball knowledge required. Every square has an equal shot at winning&mdash;it&rsquo;s pure luck of the draw.</p>
+                </div>
+            </div>
+
+            <div class="rounds-row">
+                <div class="round-card">
+                    <span class="round-emoji">🍪</span>
+                    <div class="round-name">Sweet 16</div>
+                </div>
+                <div class="round-card">
+                    <span class="round-emoji">🍪</span>
+                    <div class="round-name">Elite 8</div>
+                </div>
+                <div class="round-card">
+                    <span class="round-emoji">🍪</span>
+                    <div class="round-name">Final Four</div>
+                </div>
+                <div class="round-card">
+                    <span class="round-emoji">🍪</span>
+                    <div class="round-name">Championship</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SUPPORTED CAUSES ─── -->
+        <section class="section-block reveal">
+            <p class="section-label">Supporting Great Causes</p>
+            <h2 class="section-heading">Where It Goes</h2>
+            <p style="color:var(--text-2); margin-bottom:1.75rem; font-size:0.95rem;">A portion of every donation is split between three organizations making real impact in our community.</p>
+            <hr class="rule">
+
+            <div class="causes-stack">
+                <div class="cause-card">
+                    <div class="cause-logo-panel">
+                        <img src="images/mending-hearts.jpg" alt="Mending Hearts" class="cause-logo">
+                    </div>
+                    <div class="cause-body">
+                        <div class="cause-stat">∞</div>
+                        <div class="cause-name">Mending Hearts</div>
+                        <p class="cause-desc">Helping fund life-saving heart surgeries for children abroad. Each procedure can change a life forever.</p>
+                    </div>
+                </div>
+
+                <div class="cause-card">
+                    <div class="cause-logo-panel">
+                        <img src="images/sirv-barbershop.jpg" alt="SIRV Barbershop" class="cause-logo">
+                    </div>
+                    <div class="cause-body">
+                        <div class="cause-stat">500</div>
+                        <div class="cause-name">SIRV Barbershop</div>
+                        <p class="cause-desc">Free haircuts to people in need ($50 per haircut), strengthening our community one cut at a time.</p>
+                    </div>
+                </div>
+
+                <div class="cause-card">
+                    <div class="cause-logo-panel">
+                        <img src="images/veteran-business.jpg" alt="Veteran Owned Business Network" class="cause-logo">
+                    </div>
+                    <div class="cause-body">
+                        <div class="cause-stat">22</div>
+                        <div class="cause-name">Veteran Owned Business Network</div>
+                        <p class="cause-desc">Veteran-owned businesses getting the tools and resources they need to grow and thrive.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── CLAIM YOUR SQUARE ─── -->
+        <section class="section-block reveal">
+            <p class="section-label">Get Involved</p>
+            <h2 class="section-heading">Claim Your Square</h2>
+            <hr class="rule">
+
+            <div class="claim-layout">
+                <div class="claim-box">
+                    <div class="claim-box-label">Already a Member?</div>
+                    <p>We&rsquo;ve already given you a box! Jump in and see where your square lands this season.</p>
+                </div>
+                <div class="claim-box">
+                    <div class="claim-box-label">New Donor</div>
+                    <p>We&rsquo;re recommending a <strong>$100+ donation</strong>. This includes a <strong>Skool Membership</strong>&mdash;and a portion of every donation goes directly to our three partner organizations.</p>
+                </div>
+                <div class="claim-why">
+                    <div class="claim-box-label">Why It Matters</div>
+                    <p>A portion of every donation funds heart surgeries for children, community haircuts, and veteran entrepreneurs building better futures.</p>
+                </div>
+                <div class="claim-box" style="display:flex; align-items:center; justify-content:center; text-align:center;">
+                    <a href="https://www.skool.com/ai-growth-society-6076/about" class="btn-primary" style="animation:none;">
+                        Donate &amp; Get Started
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Skool membership visual — swap src when image is ready -->
+            <div class="skool-block">
+                <div class="skool-label">What&rsquo;s Included &mdash; Skool Membership</div>
+                <img src="Skool mockup.png" alt="Skool Membership Preview" class="skool-img">
+            </div>
+        </section>
+
+        <!-- ─── FINAL CTA ─── -->
+        <div class="cta-section reveal">
+            <p class="cta-eyebrow">Join the Challenge</p>
+            <h3>Ready to Sweeten<br>the Deal?</h3>
+            <p class="cta-sub">Donate, grab a square, and support organizations doing real good in the world.</p>
+            <a href="https://www.skool.com/ai-growth-society-6076/about" class="btn-primary" style="animation:none; margin: 0 auto;">
+                Donate &amp; Get Started
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <p class="campaign-tagline">
+                <span>Fun</span>&bull;<span>Impact</span>&bull;<span>Community</span>&bull;<span>Purpose</span>
+            </p>
+            <p style="margin-top:1.5rem; font-size:0.78rem; color:var(--text-3);">Secure payment powered by AOD Resource Group</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.07 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
