@@ -11,8 +11,9 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { searchParams } = new URL(request.url);
+        const searchParams = new URL(request.url).searchParams;
         const search = searchParams.get('search') || '';
+        const referrer = searchParams.get('referrer') || '';
         const page = parseInt(searchParams.get('page') || '1', 10);
         const pageSize = parseInt(searchParams.get('pageSize') || '25', 10);
 
@@ -21,15 +22,16 @@ export async function GET(request: NextRequest) {
         // Use the RPC function for efficient server-side search + pagination
         const { data, error } = await supabase.rpc('search_submissions', {
             search_query: search,
+            referrer_filter: referrer, // Note: you'll need to update the Supabase RPC to accept this!
             page_number: page,
             page_size: Math.min(pageSize, 100), // Cap at 100
         });
 
         if (error) {
-            console.error('Supabase RPC error:', error);
+            console.error('Supabase RPC error or RPC not updated yet:', error);
 
             // Fallback: direct query if RPC doesn't exist yet
-            return await fallbackQuery(supabase, search, page, pageSize);
+            return await fallbackQuery(supabase, search, referrer, page, pageSize);
         }
 
         return NextResponse.json(data);
@@ -80,7 +82,7 @@ export async function DELETE(request: NextRequest) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function fallbackQuery(supabase: any, search: string, page: number, pageSize: number) {
+async function fallbackQuery(supabase: any, search: string, referrer: string, page: number, pageSize: number) {
     const offset = (page - 1) * pageSize;
 
     let query = supabase
@@ -91,8 +93,12 @@ async function fallbackQuery(supabase: any, search: string, page: number, pageSi
 
     if (search) {
         query = query.or(
-            `name.ilike.%${search}%,business_name.ilike.%${search}%,email.ilike.%${search}%,passion.ilike.%${search}%,goals.ilike.%${search}%,connections.ilike.%${search}%`
+            `name.ilike.%${search}%,business_name.ilike.%${search}%,email.ilike.%${search}%,passion.ilike.%${search}%,goals.ilike.%${search}%,connections.ilike.%${search}%,referrer.ilike.%${search}%`
         );
+    }
+
+    if (referrer) {
+        query = query.eq('referrer', referrer);
     }
 
     const { data, count, error } = await query;

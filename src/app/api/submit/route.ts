@@ -5,10 +5,10 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
 
-        const { name, phone, email, business_name, passion, fun_fact, goals, connections } = body;
+        const { referrer, name, phone, email, business_name, passion, fun_fact, goals, connections } = body;
 
         // Validate required fields
-        if (!name || !phone || !email || !business_name) {
+        if (!referrer || !name || !phone || !email || !business_name) {
             return NextResponse.json(
                 { error: 'Missing required fields' },
                 { status: 400 }
@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
             .from('form_submissions')
             .insert([
                 {
+                    referrer,
                     name,
                     phone,
                     email,

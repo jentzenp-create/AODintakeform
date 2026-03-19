@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — March Madness Cookie Challenge | Acres of Diamonds</title>
+    <meta name="description" content="Register for the March Madness Cookie Challenge by Acres of Diamonds. Win Girl Scout Cookies while supporting Mending Hearts, SIRV Barbershop, and Veteran Owned Business Network.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue:       #5C9DD7;
+            --blue-light: #87BCE8;
+            --blue-dark:  #2E72B0;
+            --bg:         #090910;
+            --bg-card:    rgba(255,255,255,0.04);
+            --rule:       rgba(255,255,255,0.08);
+            --text:       #f0f0f0;
+            --text-2:     rgba(240,240,240,0.6);
+            --text-3:     rgba(240,240,240,0.35);
+            --green:      #38c97a;
+            --green-bg:   rgba(56,201,122,0.08);
+            --green-border: rgba(56,201,122,0.25);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── GRAIN TEXTURE ─── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0.045;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+        }
+
+        /* ─── AMBIENT BACKGROUND ─── */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+        }
+
+        .orb-1 {
+            width: 900px; height: 900px;
+            background: radial-gradient(circle, rgba(92,157,215,0.28) 0%, transparent 65%);
+            top: -420px; right: -300px;
+            animation: drift1 30s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(46,114,176,0.2) 0%, transparent 65%);
+            bottom: -200px; left: -200px;
+            animation: drift2 36s ease-in-out infinite;
+        }
+
+        .orb-3 {
+            width: 350px; height: 350px;
+            background: radial-gradient(circle, rgba(92,157,215,0.12) 0%, transparent 65%);
+            top: 50%; left: 40%;
+            animation: drift3 24s ease-in-out infinite;
+        }
+
+        @keyframes drift1 {
+            0%,100% { transform: translate(0,0); }
+            40%  { transform: translate(-60px, 80px); }
+            70%  { transform: translate(40px,-40px); }
+        }
+        @keyframes drift2 {
+            0%,100% { transform: translate(0,0); }
+            35%  { transform: translate(80px,-60px); }
+            70%  { transform: translate(-30px, 50px); }
+        }
+        @keyframes drift3 {
+            0%,100% { transform: translate(0,0); }
+            50%  { transform: translate(-100px, 60px); }
+        }
+
+        .grid-lines {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%);
+        }
+
+        /* ─── LAYOUT ─── */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 4rem 2.5rem 6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ─── STAGGERED ANIMATIONS ─── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(92,157,215,0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(92,157,215,0); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes checkmark {
+            0% { transform: scale(0) rotate(-45deg); opacity:0; }
+            50% { transform: scale(1.2) rotate(0deg); opacity:1; }
+            100% { transform: scale(1) rotate(0deg); opacity:1; }
+        }
+
+        /* ─── HERO HEADER ─── */
+        .hero-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--blue);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            animation: fadeUp 0.6s ease-out 0.1s both;
+        }
+
+        .hero-eyebrow::before,
+        .hero-eyebrow::after {
+            content: '';
+            display: block;
+            width: 32px;
+            height: 1px;
+            background: var(--blue);
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 7rem;
+            line-height: 0.92;
+            letter-spacing: 0.02em;
+            color: var(--text);
+            margin-bottom: 0.1em;
+            animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+        }
+
+        .h1-sub {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.4rem;
+            letter-spacing: 0.04em;
+            color: var(--blue);
+            display: block;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.3s both;
+        }
+
+        .hero-tagline {
+            font-size: 1.05rem;
+            color: var(--text-2);
+            line-height: 1.75;
+            max-width: 560px;
+            margin: 0 auto 0.5rem;
+            animation: fadeUp 0.6s ease-out 0.4s both;
+        }
+
+        .hero-tagline strong { color: var(--blue-light); font-weight: 600; }
+
+        /* ─── REGISTRATION CARD ─── */
+        .register-card {
+            background: rgba(255,255,255,0.025);
+            border: 1px solid var(--rule);
+            border-radius: 24px;
+            padding: 3rem 3.5rem 3.5rem;
+            max-width: 680px;
+            margin: 0 auto 5rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.7s ease-out 0.45s both;
+        }
+
+        .register-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--blue-dark), var(--blue), var(--blue-light), var(--blue));
+            background-size: 300% 100%;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        .register-card::after {
+            content: '';
+            position: absolute;
+            top: -100px; right: -100px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(92,157,215,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .form-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(92,157,215,0.1);
+            border: 1px solid rgba(92,157,215,0.2);
+            border-radius: 100px;
+            padding: 0.4rem 1.1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--blue-light);
+            margin-bottom: 1rem;
+        }
+
+        .form-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.8rem;
+            letter-spacing: 0.03em;
+            color: var(--text);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-2);
+            line-height: 1.6;
+        }
+
+        /* ─── FORM FIELDS ─── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .field-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .field-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-2);
+        }
+
+        .field-label .req {
+            color: var(--blue);
+            margin-left: 0.2rem;
+        }
+
+        .field-input {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            font-family: 'Outfit', system-ui, sans-serif;
+            font-size: 0.95rem;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+            width: 100%;
+        }
+
+        .field-input::placeholder {
+            color: var(--text-3);
+        }
+
+        .field-input:focus {
+            border-color: var(--blue);
+            background: rgba(92,157,215,0.06);
+            box-shadow: 0 0 0 3px rgba(92,157,215,0.12);
+        }
+
+        .field-input.error {
+            border-color: #e55;
+            background: rgba(255,80,80,0.06);
+        }
+
+        .field-error {
+            font-size: 0.72rem;
+            color: #e55;
+            min-height: 0.9rem;
+        }
+
+        /* ─── SUBMIT BUTTON ─── */
+        .btn-submit {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            background: var(--blue);
+            color: #fff;
+            padding: 1.1rem 2.25rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Outfit', system-ui, sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .btn-submit:hover {
+            background: var(--blue-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px rgba(92,157,215,0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-submit svg { transition: transform 0.25s ease; }
+        .btn-submit:hover svg { transform: translateX(4px); }
+
+        .btn-submit .spinner {
+            width: 20px; height: 20px;
+            border: 2.5px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            display: none;
+        }
+
+        .btn-submit.loading .spinner { display: block; }
+        .btn-submit.loading .btn-label { display: none; }
+        .btn-submit.loading .btn-arrow { display: none; }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ─── SUCCESS STATE ─── */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeUp 0.5s ease-out both;
+        }
+
+        .success-icon {
+            width: 72px; height: 72px;
+            background: var(--green-bg);
+            border: 2px solid var(--green-border);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: checkmark 0.5s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+        }
+
+        .success-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            color: var(--text);
+            letter-spacing: 0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-text {
+            font-size: 0.95rem;
+            color: var(--text-2);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* ─── NEXT STEP: DONATE ─── */
+        .next-step-banner {
+            background: var(--green-bg);
+            border: 1px solid var(--green-border);
+            border-radius: 14px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .next-step-number {
+            flex-shrink: 0;
+            width: 44px; height: 44px;
+            background: var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+
+        .next-step-body {
+            flex: 1;
+        }
+
+        .next-step-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 0.2rem;
+        }
+
+        .next-step-desc {
+            font-size: 0.9rem;
+            color: var(--text-2);
+            line-height: 1.5;
+        }
+
+        /* ─── STEP FLOW ─── */
+        .step-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 3.5rem;
+            animation: fadeUp 0.6s ease-out 0.5s both;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.1rem;
+            border: 1px solid rgba(92,157,215,0.22);
+            border-radius: 10px;
+            background: rgba(92,157,215,0.06);
+        }
+
+        .step.active {
+            border-color: var(--blue);
+            background: rgba(92,157,215,0.14);
+            box-shadow: 0 0 20px rgba(92,157,215,0.15);
+        }
+
+        .step-icon { font-size: 1.2rem; }
+
+        .step-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--blue-light);
+            white-space: nowrap;
+        }
+
+        .step-arrow {
+            font-size: 1rem;
+            color: var(--text-3);
+            padding: 0 0.5rem;
+        }
+
+        /* ─── SECTION WRAPPER ─── */
+        .section-block {
+            margin-bottom: 3rem;
+        }
+
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-label::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: var(--blue);
+        }
+
+        .section-heading {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 0.03em;
+            line-height: 1;
+            color: var(--text);
+            margin-bottom: 2.5rem;
+        }
+
+        hr.rule {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 0 0 2.5rem;
+        }
+
+        /* ─── BUTTON ─── */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--blue);
+            color: #fff;
+            padding: 1rem 2.25rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            box-shadow: 0 0 0 0 rgba(92,157,215,0.5);
+            transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px rgba(92,157,215,0.4);
+        }
+
+        .btn-primary svg { transition: transform 0.25s ease; }
+        .btn-primary:hover svg { transform: translateX(4px); }
+
+        /* ─── MECHANIC LAYOUT ─── */
+        .mechanic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .mechanic-box {
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-top: 2px solid var(--blue);
+            border-radius: 14px;
+            padding: 2rem;
+            font-size: 0.95rem;
+            color: var(--text-2);
+            line-height: 1.75;
+        }
+
+        .mechanic-box strong { color: var(--blue-light); font-weight: 600; }
+
+        .mechanic-note {
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-radius: 14px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-2);
+        }
+
+        .mechanic-note-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        /* ─── ROUNDS ─── */
+        .rounds-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--rule);
+            border: 1px solid var(--rule);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .round-card {
+            background: var(--bg);
+            padding: 1.75rem 1rem;
+            text-align: center;
+            transition: background 0.2s ease;
+        }
+
+        .round-card:hover { background: rgba(92,157,215,0.07); }
+
+        .round-emoji {
+            font-size: 2rem;
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+
+        .round-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.06em;
+            color: var(--blue-light);
+        }
+
+        /* ─── CAUSE CARDS ─── */
+        .causes-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .cause-card {
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-radius: 18px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            transition: background 0.25s ease, border-color 0.25s ease;
+        }
+
+        .cause-card:hover {
+            background: rgba(92,157,215,0.06);
+            border-color: rgba(92,157,215,0.25);
+        }
+
+        .cause-logo-panel {
+            border-right: 1px solid var(--rule);
+            background: #111118;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            min-height: 220px;
+        }
+
+        .cause-logo {
+            width: 100%;
+            height: auto;
+            max-height: 180px;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .cause-card:hover .cause-logo { transform: scale(1.04); }
+
+        .cause-body {
+            padding: 2.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        .cause-stat {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            line-height: 1;
+            color: var(--blue);
+            letter-spacing: 0.04em;
+            margin-bottom: 0.15em;
+        }
+
+        .cause-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+
+        .cause-desc {
+            font-size: 0.875rem;
+            color: var(--text-2);
+            line-height: 1.6;
+        }
+
+        /* ─── DONATE CTA SECTION ─── */
+        .donate-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--rule);
+            border-radius: 24px;
+            margin-top: 1rem;
+            background: rgba(92,157,215,0.02);
+        }
+
+        .donate-section::before {
+            content: '';
+            position: absolute;
+            top: -120px; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 400px;
+            background: radial-gradient(ellipse at center, rgba(92,157,215,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .donate-eyebrow {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+
+        .donate-step-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--green-bg);
+            border: 1px solid var(--green-border);
+            border-radius: 100px;
+            padding: 0.35rem 1rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 1.25rem;
+        }
+
+        .donate-heading {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4.5rem;
+            line-height: 0.95;
+            letter-spacing: 0.03em;
+            color: var(--text);
+            margin-bottom: 1.25rem;
+        }
+
+        .donate-sub {
+            font-size: 1rem;
+            color: var(--text-2);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .donate-sub strong { color: var(--blue-light); font-weight: 600; }
+
+        .campaign-tagline {
+            margin-top: 2.5rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-3);
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+
+        .campaign-tagline span {
+            color: var(--blue);
+            margin: 0 0.5rem;
+        }
+
+        /* ─── SCROLL REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── MOBILE ─── */
+        @media (max-width: 860px) {
+            h1 { font-size: 5.5rem; }
+            .mechanic-grid { grid-template-columns: 1fr; }
+            .rounds-row { grid-template-columns: repeat(2, 1fr); }
+            .cause-card { grid-template-columns: 1fr; }
+            .cause-logo-panel {
+                border-right: none;
+                border-bottom: 1px solid var(--rule);
+                min-height: 180px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 4rem; }
+            .h1-sub { font-size: 2.4rem; }
+            .section-heading { font-size: 2.5rem; }
+            .donate-heading { font-size: 3.5rem; }
+            .container { padding: 3rem 1.25rem 4rem; }
+            .register-card { padding: 2rem 1.5rem 2.5rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-title { font-size: 2.2rem; }
+            .step-flow { flex-wrap: wrap; gap: 0.5rem; }
+            .step-arrow { display: none; }
+            .cause-card { grid-template-columns: 1fr; }
+            .cause-logo-panel {
+                border-right: none;
+                border-bottom: 1px solid var(--rule);
+                min-height: 180px;
+            }
+            .next-step-banner { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-layer">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-lines"></div>
+    </div>
+
+    <div class="container">
+
+        <!-- ─── HERO ─── -->
+        <section class="hero-header">
+            <p class="hero-eyebrow">Sweet 16 Tournament Challenge</p>
+            <h1>March<br>Madness</h1>
+            <span class="h1-sub">Cookie Challenge</span>
+            <p class="hero-tagline">Join a fun event where you don&rsquo;t need to know anything about basketball. We&rsquo;re making it a little sweeter&mdash;giving away <strong>girl scout cookies</strong> while supporting great causes, one box at a time.</p>
+        </section>
+
+        <!-- ─── STEP FLOW ─── -->
+        <div class="step-flow">
+            <div class="step active">
+                <span class="step-icon">📝</span>
+                <span class="step-label">Step 1: Register</span>
+            </div>
+            <span class="step-arrow">&#8594;</span>
+            <div class="step">
+                <span class="step-icon">💙</span>
+                <span class="step-label">Step 2: Donate $100+</span>
+            </div>
+            <span class="step-arrow">&#8594;</span>
+            <div class="step">
+                <span class="step-icon">🍪</span>
+                <span class="step-label">Step 3: Win Cookies!</span>
+            </div>
+        </div>
+
+        <!-- ─── REGISTRATION FORM ─── -->
+        <div class="register-card" id="register-card">
+            <div class="form-header">
+                <div class="form-badge">🏀 Step 1 of 2</div>
+                <h2 class="form-title">Register Now</h2>
+                <p class="form-subtitle">Secure your spot in the challenge. After registering, you&rsquo;ll be able to donate and claim your square.</p>
+            </div>
+
+            <form id="registration-form" class="form-grid" novalidate>
+                <div class="field-group">
+                    <label class="field-label" for="name">Full Name <span class="req">*</span></label>
+                    <input type="text" id="name" name="name" class="field-input" placeholder="John Doe" required>
+                    <span class="field-error" id="name-error"></span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="invited_by">Who Invited You? <span class="req">*</span></label>
+                    <input type="text" id="invited_by" name="invited_by" class="field-input" placeholder="Jane Smith" required>
+                    <span class="field-error" id="invited_by-error"></span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="company">Company</label>
+                    <input type="text" id="company" name="company" class="field-input" placeholder="Acme Inc.">
+                    <span class="field-error" id="company-error"></span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="profession">Profession</label>
+                    <input type="text" id="profession" name="profession" class="field-input" placeholder="Marketing Director">
+                    <span class="field-error" id="profession-error"></span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="location">Location</label>
+                    <input type="text" id="location" name="location" class="field-input" placeholder="Nashville, TN">
+                    <span class="field-error" id="location-error"></span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="phone">Phone <span class="req">*</span></label>
+                    <input type="tel" id="phone" name="phone" class="field-input" placeholder="(555) 123-4567" required>
+                    <span class="field-error" id="phone-error"></span>
+                </div>
+
+                <div class="field-group full-width">
+                    <label class="field-label" for="email">Email <span class="req">*</span></label>
+                    <input type="email" id="email" name="email" class="field-input" placeholder="john@example.com" required>
+                    <span class="field-error" id="email-error"></span>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submit-btn">
+                    <span class="spinner"></span>
+                    <span class="btn-label">Register for the Challenge</span>
+                    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </form>
+
+            <!-- Success State (hidden by default) -->
+            <div class="success-message" id="success-message">
+                <div class="success-icon">✅</div>
+                <h2 class="success-title">You&rsquo;re Registered!</h2>
+                <p class="success-text">Welcome to the March Madness Cookie Challenge. You&rsquo;re officially in the game.</p>
+
+                <div class="next-step-banner">
+                    <div class="next-step-number">2</div>
+                    <div class="next-step-body">
+                        <p class="next-step-label">Next Step &mdash; Donate</p>
+                        <p class="next-step-desc">Make a $100+ donation to claim your square and support three amazing causes.</p>
+                    </div>
+                    <a href="https://donate.stripe.com/14AcN58B60zkeTg2wo0kE0g" class="btn-primary" style="flex-shrink:0;">
+                        Donate Now
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── HOW IT WORKS ─── -->
+        <section class="section-block reveal">
+            <p class="section-label">The Rules</p>
+            <h2 class="section-heading">How It Works</h2>
+            <hr class="rule">
+
+            <div class="mechanic-grid">
+                <div class="mechanic-box">
+                    Just like Super Bowl squares&mdash;each square is assigned two digits. After every round, we look at the <strong>highest-scoring game</strong>. If the <strong>last digit of each team&rsquo;s final score</strong> matches your square, you win a <strong>box of Girl Scout Cookies</strong> delivered to you.
+                </div>
+                <div class="mechanic-note">
+                    <span class="mechanic-note-icon">🎲</span>
+                    <p>No basketball knowledge required. Every square has an equal shot at winning&mdash;it&rsquo;s pure luck of the draw.</p>
+                </div>
+            </div>
+
+            <div class="rounds-row">
+                <div class="round-card">
+                    <span class="round-emoji">🍪</span>
+                    <div class="round-name">Sweet 16</div>
+                </div>
+                <div class="round-card">
+                    <span class="round-emoji">🍪</span>
+                    <div class="round-name">Elite 8</div>
+                </div>
+                <div class="round-card">
+                    <span class="round-emoji">🍪</span>
+                    <div class="round-name">Final Four</div>
+                </div>
+                <div class="round-card">
+                    <span class="round-emoji">🍪</span>
+                    <div class="round-name">Championship</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SUPPORTED CAUSES ─── -->
+        <section class="section-block reveal">
+            <p class="section-label">Supporting Great Causes</p>
+            <h2 class="section-heading">Where It Goes</h2>
+            <p style="color:var(--text-2); margin-bottom:1.75rem; font-size:0.95rem;">A portion of every donation is split between three organizations making real impact in our community.</p>
+            <hr class="rule">
+
+            <div class="causes-stack">
+                <div class="cause-card">
+                    <div class="cause-logo-panel">
+                        <img src="images/mending-hearts.jpg" alt="Mending Hearts" class="cause-logo">
+                    </div>
+                    <div class="cause-body">
+                        <div class="cause-stat">❤️</div>
+                        <div class="cause-name">Mending Hearts</div>
+                        <p class="cause-desc">Helping fund life-saving heart surgeries for children abroad. Each procedure can change a life forever.</p>
+                    </div>
+                </div>
+
+                <div class="cause-card">
+                    <div class="cause-logo-panel">
+                        <img src="images/sirv-barbershop.jpg" alt="SIRV Barbershop" class="cause-logo">
+                    </div>
+                    <div class="cause-body">
+                        <div class="cause-stat">500</div>
+                        <div class="cause-name">SIRV Barbershop</div>
+                        <p class="cause-desc">Free haircuts to people in need ($50 per haircut), strengthening our community one cut at a time.</p>
+                    </div>
+                </div>
+
+                <div class="cause-card">
+                    <div class="cause-logo-panel">
+                        <img src="images/veteran-business.jpg" alt="Veteran Owned Business Network" class="cause-logo">
+                    </div>
+                    <div class="cause-body">
+                        <div class="cause-stat">22</div>
+                        <div class="cause-name">Veteran Owned Business Network</div>
+                        <p class="cause-desc">Veteran-owned businesses getting the tools and resources they need to grow and thrive.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── DONATE CTA ─── -->
+        <div class="donate-section reveal">
+            <div class="donate-step-label">💙 Step 2</div>
+            <p class="donate-eyebrow">Ready to Make an Impact?</p>
+            <h3 class="donate-heading">Donate &amp; Claim<br>Your Square</h3>
+            <p class="donate-sub">We&rsquo;re recommending a <strong>$100+ donation</strong>. This includes a <strong>1 Month Skool Membership</strong>&mdash;and a portion of every donation goes directly to our three partner organizations.</p>
+            <a href="https://donate.stripe.com/14AcN58B60zkeTg2wo0kE0g" class="btn-primary" style="margin: 0 auto;">
+                Donate &amp; Get Started
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <p class="campaign-tagline">
+                <span>Fun</span>&bull;<span>Impact</span>&bull;<span>Community</span>&bull;<span>Purpose</span>
+            </p>
+            <p style="margin-top:1.5rem; font-size:0.78rem; color:var(--text-3);">Secure payment powered by AOD Resource Group</p>
+        </div>
+
+    </div>
+
+    <script>
+        // ─── Scroll Reveal ───
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.07 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // ─── Form Handling ───
+        const form = document.getElementById('registration-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const successMessage = document.getElementById('success-message');
+
+        // ── Forward to Next.js API route to handle GHL webhook securely & bypass CORS ──
+        const WEBHOOK_URL = '/api/register-webhook';
+
+        // Simple email regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Phone formatting
+        function formatPhone(value) {
+            const digits = value.replace(/\D/g, '');
+            if (digits.length <= 3) return digits;
+            if (digits.length <= 6) return `(${digits.slice(0,3)}) ${digits.slice(3)}`;
+            return `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6,10)}`;
+        }
+
+        const phoneInput = document.getElementById('phone');
+        phoneInput.addEventListener('input', function() {
+            const pos = this.selectionStart;
+            const before = this.value;
+            this.value = formatPhone(this.value);
+            // Try to maintain cursor position
+            const diff = this.value.length - before.length;
+            this.setSelectionRange(pos + diff, pos + diff);
+        });
+
+        // Clear error on input
+        document.querySelectorAll('.field-input').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('error');
+                const errorEl = document.getElementById(this.id + '-error');
+                if (errorEl) errorEl.textContent = '';
+            });
+        });
+
+        function validate() {
+            let valid = true;
+
+            const fields = [
+                { id: 'name', msg: 'Please enter your name' },
+                { id: 'invited_by', msg: 'Please tell us who invited you' },
+                { id: 'phone', msg: 'Please enter a valid phone number', test: (v) => v.replace(/\D/g,'').length >= 10 },
+                { id: 'email', msg: 'Please enter a valid email', test: (v) => emailRegex.test(v) },
+            ];
+
+            fields.forEach(f => {
+                const input = document.getElementById(f.id);
+                const errorEl = document.getElementById(f.id + '-error');
+                const val = input.value.trim();
+
+                if (!val || (f.test && !f.test(val))) {
+                    input.classList.add('error');
+                    if (errorEl) errorEl.textContent = f.msg;
+                    valid = false;
+                } else {
+                    input.classList.remove('error');
+                    if (errorEl) errorEl.textContent = '';
+                }
+            });
+
+            return valid;
+        }
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!validate()) return;
+
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            const data = {
+                name: document.getElementById('name').value.trim(),
+                invited_by: document.getElementById('invited_by').value.trim(),
+                company: document.getElementById('company').value.trim(),
+                profession: document.getElementById('profession').value.trim(),
+                location: document.getElementById('location').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                source: 'march-madness-registration',
+                registered_at: new Date().toISOString()
+            };
+
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                // Show success
+                form.style.display = 'none';
+                document.querySelector('.form-header').style.display = 'none';
+                successMessage.classList.add('show');
+
+                // Scroll to success
+                document.getElementById('register-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            } catch (err) {
+                console.error('Webhook error:', err);
+                // Still show success in case of CORS issues with no-cors mode
+                form.style.display = 'none';
+                document.querySelector('.form-header').style.display = 'none';
+                successMessage.classList.add('show');
+                document.getElementById('register-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } finally {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

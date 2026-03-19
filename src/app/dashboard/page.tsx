@@ -14,6 +14,7 @@ interface Submission {
     fun_fact: string;
     goals: string;
     connections: string;
+    referrer: string;
     submitted_at: string;
 }
 
@@ -36,6 +37,7 @@ export default function Dashboard() {
     const [isLoading, setIsLoading] = useState(false);
     const [search, setSearch] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
+    const [referrerFilter, setReferrerFilter] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [totalResults, setTotalResults] = useState(0);
@@ -66,6 +68,7 @@ export default function Dashboard() {
                 pageSize: String(pageSize),
             });
             if (debouncedSearch) params.set('search', debouncedSearch);
+            if (referrerFilter) params.set('referrer', referrerFilter);
 
             const res = await fetch(`/api/dashboard?${params.toString()}`, {
                 headers: { 'x-dashboard-key': dashboardKey },
@@ -88,7 +91,7 @@ export default function Dashboard() {
         } finally {
             setIsLoading(false);
         }
-    }, [dashboardKey, currentPage, pageSize, debouncedSearch]);
+    }, [dashboardKey, currentPage, pageSize, debouncedSearch, referrerFilter]);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -269,6 +272,35 @@ export default function Dashboard() {
                             )}
                             <span className="dash-search-hint">/</span>
                         </div>
+                        <div className="dash-search-wrapper" style={{ marginLeft: '1rem' }}>
+                            <select
+                                className="dash-search-input"
+                                style={{
+                                    paddingLeft: '1rem',
+                                    appearance: 'none',
+                                    cursor: 'pointer',
+                                    minWidth: '150px'
+                                }}
+                                value={referrerFilter}
+                                onChange={(e) => {
+                                    setReferrerFilter(e.target.value);
+                                    setCurrentPage(1);
+                                }}
+                            >
+                                <option value="" style={{ background: '#0a0a0f', color: 'white' }}>All Referrers</option>
+                                <option value="Joe Wexler" style={{ background: '#0a0a0f', color: 'white' }}>Joe Wexler</option>
+                                {submissions
+                                    .map(s => s.referrer)
+                                    .filter((v, i, a) => v && v !== 'Joe Wexler' && a.indexOf(v) === i)
+                                    .map(ref => (
+                                        <option key={ref} value={ref} style={{ background: '#0a0a0f', color: 'white' }}>{ref}</option>
+                                    ))
+                                }
+                            </select>
+                            <svg style={{ position: 'absolute', right: '1rem', pointerEvents: 'none', color: 'var(--text-muted)' }} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
                     </div>
                 </header>
 
@@ -345,7 +377,7 @@ export default function Dashboard() {
                                 )}
 
                                 {/* Footer */}
-<div className="dash-card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div className="dash-card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <span className="dash-card-date">{formatDate(sub.submitted_at)}</span>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                         <button
@@ -481,6 +513,11 @@ export default function Dashboard() {
                                 <div className="dash-modal-section dash-modal-section-highlight">
                                     <h4 className="dash-modal-section-label">🤝 Looking to Connect With</h4>
                                     <p className="dash-modal-section-text">{selectedSubmission.connections || '—'}</p>
+                                </div>
+
+                                <div className="dash-modal-section">
+                                    <h4 className="dash-modal-section-label">👤 Referred By</h4>
+                                    <p className="dash-modal-section-text">{selectedSubmission.referrer || '—'}</p>
                                 </div>
                             </div>
 

@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 // ===== Types =====
 interface FormData {
+  referrer: string;
   name: string;
   phone: string;
   email: string;
@@ -13,7 +14,9 @@ interface FormData {
   passion: string;
   fun_fact: string;
   goals: string;
+  custom_goal: string;
   connections: string;
+  custom_connection: string;
 }
 
 interface StepConfig {
@@ -22,15 +25,26 @@ interface StepConfig {
   question: string;
   subtitle?: string;
   placeholder: string;
-  type: 'text' | 'textarea' | 'email' | 'tel';
+  type: 'text' | 'textarea' | 'email' | 'tel' | 'select';
+  options?: string[];
   validation?: (value: string) => string | null;
 }
 
 // ===== Step Configuration =====
 const steps: StepConfig[] = [
   {
-    key: 'name',
+    key: 'referrer',
     number: '01',
+    question: 'Who sent you here?',
+    subtitle: 'Select from the list below.',
+    placeholder: 'Select who referred you...',
+    type: 'select',
+    options: ['Joe Wexler'],
+    validation: (v) => (!v ? 'Please select who sent you' : null),
+  },
+  {
+    key: 'name',
+    number: '02',
     question: "What's your name?",
     subtitle: "Let's start with a proper introduction.",
     placeholder: 'Type your full name...',
@@ -39,7 +53,7 @@ const steps: StepConfig[] = [
   },
   {
     key: 'phone',
-    number: '02',
+    number: '03',
     question: "What's your phone number?",
     subtitle: 'The best number to reach you at.',
     placeholder: '(555) 123-4567',
@@ -51,7 +65,7 @@ const steps: StepConfig[] = [
   },
   {
     key: 'email',
-    number: '03',
+    number: '04',
     question: "What's your email address?",
     subtitle: "We'll use this to keep in touch.",
     placeholder: 'you@company.com',
@@ -61,7 +75,7 @@ const steps: StepConfig[] = [
   },
   {
     key: 'business_name',
-    number: '04',
+    number: '05',
     question: "What's your business name?",
     subtitle: "Tell us about your company or organization.",
     placeholder: 'Your business or organization...',
@@ -70,7 +84,7 @@ const steps: StepConfig[] = [
   },
   {
     key: 'passion',
-    number: '05',
+    number: '06',
     question: 'Why are you passionate about what you do?',
     subtitle: "We'd love to hear what drives you.",
     placeholder: 'Share what motivates and inspires you...',
@@ -79,7 +93,7 @@ const steps: StepConfig[] = [
   },
   {
     key: 'fun_fact',
-    number: '06',
+    number: '07',
     question: "Fun Fact: What's something you're proud of accomplishing?",
     subtitle: 'Personally or professionally — brag a little!',
     placeholder: "Share an accomplishment you're proud of...",
@@ -88,21 +102,34 @@ const steps: StepConfig[] = [
   },
   {
     key: 'goals',
-    number: '07',
+    number: '08',
     question: 'What goals are you trying to achieve this month or this year?',
     subtitle: 'Think big — we want to help you get there.',
-    placeholder: 'Describe your goals and aspirations...',
-    type: 'textarea',
-    validation: (v) => (v.trim().length < 5 ? 'Tell us about your goals' : null),
+    placeholder: 'Select your main goal...',
+    type: 'select',
+    options: [
+      'Grow Disposable Income',
+      'Free up Your Time',
+      'Bring More Magic Into Your Life'
+    ],
+    validation: (v) => (!v ? 'Please select a goal' : null),
   },
   {
     key: 'connections',
-    number: '08',
+    number: '09',
     question: 'Who do you need to meet to help you accomplish those goals?',
     subtitle: "That's what we're here for — connecting you with the right people.",
-    placeholder: 'Describe the types of people or professionals you want to connect with...',
-    type: 'textarea',
-    validation: (v) => (v.trim().length < 5 ? 'Let us know who you need to meet' : null),
+    placeholder: 'Select a category...',
+    type: 'select',
+    options: [
+      'Community Leaders',
+      'Finance, Accounting, Professional Services',
+      'Leadership',
+      'Veterans and Medical',
+      'Real Estate',
+      'Other'
+    ],
+    validation: (v) => (!v ? 'Please select who you need to meet' : null),
   },
 ];
 
@@ -138,6 +165,7 @@ export default function IntakeForm() {
   const [currentStep, setCurrentStep] = useState(-1); // -1 = welcome screen
   const [direction, setDirection] = useState(1);
   const [formData, setFormData] = useState<FormData>({
+    referrer: '',
     name: '',
     phone: '',
     email: '',
@@ -145,7 +173,9 @@ export default function IntakeForm() {
     passion: '',
     fun_fact: '',
     goals: '',
+    custom_goal: '',
     connections: '',
+    custom_connection: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -190,11 +220,22 @@ export default function IntakeForm() {
     // If on last step, submit
     if (currentStep === totalSteps - 1) {
       setIsSubmitting(true);
+
+      const submitData = { ...formData };
+      if (submitData.goals && submitData.custom_goal) {
+        submitData.goals = `${submitData.goals}\n\nElaboration: ${submitData.custom_goal}`;
+      }
+      if (submitData.connections === 'Other') {
+        submitData.connections = submitData.custom_connection ? `Other: ${submitData.custom_connection}` : 'Other';
+      } else if (submitData.connections && submitData.custom_connection) {
+        submitData.connections = `${submitData.connections}\n\nElaboration: ${submitData.custom_connection}`;
+      }
+
       try {
         const res = await fetch('/api/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(submitData),
         });
         if (!res.ok) throw new Error('Failed to submit');
         setIsComplete(true);
@@ -438,6 +479,70 @@ export default function IntakeForm() {
                   onKeyDown={handleKeyDown}
                   rows={4}
                 />
+              ) : step.type === 'select' ? (
+                <>
+                  <select
+                    ref={inputRef as React.Ref<HTMLSelectElement>}
+                    className="form-input"
+                    style={{
+                      cursor: 'pointer',
+                      appearance: 'none',
+                      marginBottom: (step.key === 'goals' && currentValue) || (step.key === 'connections' && currentValue === 'Other') ? '1rem' : '0'
+                    }}
+                    value={currentValue}
+                    onChange={(e) => handleInputChange(step.key, e.target.value)}
+                    onKeyDown={handleKeyDown}
+                  >
+                    <option value="" disabled style={{ background: '#0a0a0f', color: 'rgba(255,255,255,0.4)' }}>
+                      {step.placeholder}
+                    </option>
+                    {step.options?.map((opt) => (
+                      <option key={opt} value={opt} style={{ background: '#0a0a0f', color: '#fff' }}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+
+                  {step.key === 'goals' && currentValue && (
+                    <motion.textarea
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="form-textarea"
+                      placeholder="Tell us more (optional)..."
+                      value={formData.custom_goal}
+                      onChange={(e) => handleInputChange('custom_goal', e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                          e.preventDefault();
+                          goNext();
+                        }
+                      }}
+                      rows={3}
+                      autoFocus
+                    />
+                  )}
+
+                  {step.key === 'connections' && currentValue === 'Other' && (
+                    <motion.textarea
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="form-textarea"
+                      placeholder="Tell us more (optional)..."
+                      value={formData.custom_connection}
+                      onChange={(e) => handleInputChange('custom_connection', e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                          e.preventDefault();
+                          goNext();
+                        }
+                      }}
+                      rows={3}
+                      autoFocus
+                    />
+                  )}
+                </>
               ) : (
                 <input
                   ref={inputRef as React.Ref<HTMLInputElement>}
@@ -517,8 +622,10 @@ export default function IntakeForm() {
             )}
 
             <div className="keyboard-hint">
-              {step.type === 'textarea' ? (
+              {step.type === 'textarea' || (step.key === 'goals' && currentValue) || (step.key === 'connections' && currentValue === 'Other') ? (
                 <>Press <span className="kbd">Ctrl</span> + <span className="kbd">Enter ↵</span> to continue</>
+              ) : step.type === 'select' ? (
+                <>Use arrows to select, then <span className="kbd">Enter ↵</span> to continue</>
               ) : (
                 <>Press <span className="kbd">Enter ↵</span> to continue</>
               )}

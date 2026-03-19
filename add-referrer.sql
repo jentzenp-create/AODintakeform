@@ -1,73 +1,9 @@
--- Create the form_submissions table in Supabase
--- Run this SQL in your Supabase SQL Editor (Dashboard > SQL Editor)
+-- Run this in your Supabase SQL Editor to add the 'referrer' column and update the search.
 
-CREATE TABLE IF NOT EXISTS form_submissions (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  name TEXT NOT NULL,
-  phone TEXT NOT NULL,
-  email TEXT NOT NULL,
-  business_name TEXT NOT NULL,
-  passion TEXT,
-  fun_fact TEXT,
-  goals TEXT,
-  connections TEXT,
-  referrer TEXT,
-  submitted_at TIMESTAMPTZ DEFAULT NOW(),
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+-- 1. Add the referrer column
+ALTER TABLE form_submissions ADD COLUMN IF NOT EXISTS referrer TEXT;
 
--- Enable Row Level Security
-ALTER TABLE form_submissions ENABLE ROW LEVEL SECURITY;
-
--- Create a policy to allow anonymous inserts (for the form)
-CREATE POLICY "Allow anonymous inserts" ON form_submissions
-  FOR INSERT
-  WITH CHECK (true);
-
--- Create a policy to allow authenticated reads (for admin viewing)
-CREATE POLICY "Allow authenticated reads" ON form_submissions
-  FOR SELECT
-  USING (auth.role() = 'authenticated');
-
--- Optional: Create an index on email for faster lookups
-CREATE INDEX idx_form_submissions_email ON form_submissions(email);
-
--- Optional: Create an index on submitted_at for sorting
-CREATE INDEX idx_form_submissions_submitted_at ON form_submissions(submitted_at DESC);
-
--- =====================================================
--- DASHBOARD PERFORMANCE INDEXES (for 100k+ records)
--- =====================================================
-
--- Enable the pg_trgm extension for fuzzy text search
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
-
--- GIN trigram indexes for fast ILIKE searches across key fields
-CREATE INDEX idx_form_submissions_name_trgm ON form_submissions USING GIN (name gin_trgm_ops);
-CREATE INDEX idx_form_submissions_business_trgm ON form_submissions USING GIN (business_name gin_trgm_ops);
-CREATE INDEX idx_form_submissions_email_trgm ON form_submissions USING GIN (email gin_trgm_ops);
-
--- Full-text search vector column and index for comprehensive search
-ALTER TABLE form_submissions ADD COLUMN IF NOT EXISTS search_vector tsvector
-  GENERATED ALWAYS AS (
-    to_tsvector('english',
-      coalesce(name, '') || ' ' ||
-      coalesce(business_name, '') || ' ' ||
-      coalesce(email, '') || ' ' ||
-      coalesce(passion, '') || ' ' ||
-      coalesce(fun_fact, '') || ' ' ||
-      coalesce(goals, '') || ' ' ||
-      coalesce(connections, '') || ' ' ||
-      coalesce(referrer, '')
-    )
-  ) STORED;
-
-CREATE INDEX idx_form_submissions_search ON form_submissions USING GIN (search_vector);
-
--- =====================================================
--- RPC FUNCTION: Paginated search for dashboard
--- =====================================================
-
+-- 2. Update the RPC function to support the new parameter
 CREATE OR REPLACE FUNCTION search_submissions(
   search_query TEXT DEFAULT '',
   referrer_filter TEXT DEFAULT '',
