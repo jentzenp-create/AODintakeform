@@ -46,14 +46,14 @@ export default function BookWithJoePage() {
           </p>
         </div>
 
-        {/* Content Section (Bio Left + Calendar Right) */}
-        <div className="flex flex-col lg:flex-row gap-12 xl:gap-16">
+        {/* Content Section (Stacked & Centered) */}
+        <div className="flex flex-col items-center gap-20 max-w-4xl mx-auto">
           
-          {/* Left Column: Bio & Image */}
-          <div className="w-full lg:w-5/12 xl:w-4/12 flex flex-col items-center">
+          {/* Top: Bio & Image */}
+          <div className="w-full mt-12">
             {/* Image & Name Profile Card */}
-            <div className="glass-card w-full p-8 lg:sticky lg:top-24 flex flex-col items-center mt-12 lg:mt-0">
-              <div className="w-56 h-56 mx-auto mb-6 rounded-full overflow-hidden border-[4px] border-[var(--primary)] shadow-[0_0_40px_rgba(92,157,215,0.4)] relative mt-[-100px] bg-[#0a0a0f]">
+            <div className="glass-card w-full p-6 sm:p-10 md:p-12 flex flex-col items-center">
+              <div className="w-48 h-48 sm:w-56 sm:h-56 mx-auto mb-6 rounded-full overflow-hidden border-[4px] border-[var(--primary)] shadow-[0_0_40px_rgba(92,157,215,0.4)] relative mt-[-100px] sm:mt-[-120px] bg-[#0a0a0f]">
                 <img 
                   src="/images/joe-wexler.jpg" 
                   alt="Joe Wexler" 
@@ -61,14 +61,14 @@ export default function BookWithJoePage() {
                 />
               </div>
               
-              <h2 className="text-3xl font-bold mb-1 text-center text-white tracking-widest leading-none mt-2">JOE WEXLER</h2>
-              <p className="text-[var(--primary)] text-center font-bold tracking-[0.2em] text-xs uppercase mb-8">Financial Advisor</p>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-2 text-center text-white tracking-widest leading-none mt-2">JOE WEXLER</h2>
+              <p className="text-[var(--primary)] text-center font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-10">Financial Advisor</p>
               
-              <div className="text-[var(--text-secondary)] space-y-6 text-[1.05rem] leading-relaxed text-justify sm:text-left px-2">
+              <div className="text-[var(--text-secondary)] space-y-6 text-[1.05rem] sm:text-lg leading-relaxed text-center px-2 sm:px-8">
                 <p>
                   Knowledge is the key to a successful financial future. My background, experience and commitment to providing you with the resources you need to make financial decisions, can help make your financial future as successful as you need it to be.
                 </p>
-                <div className="h-px bg-white/5 w-2/3 mx-auto my-4"/>
+                <div className="h-px bg-white/10 w-1/3 mx-auto my-8"/>
                 <p>
                   I pride myself in getting to know each client so that I can understand their individual needs and what matters most to them. This helps me recommend products and strategies designed to meet their current needs, and more importantly, their future needs.
                 </p>
@@ -77,12 +77,14 @@ export default function BookWithJoePage() {
             </div>
           </div>
           
-          {/* Right Column: Calendar Embed */}
-          <div className="w-full lg:w-7/12 xl:w-8/12 relative">
-            {/* Soft backdrop glow behind calendar */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[var(--glow)] to-[var(--glow-strong)] blur-3xl opacity-50 z-0 rounded-3xl -m-4"></div>
+          {/* Bottom: Calendar Embed */}
+          <div className="w-full relative mt-4">
+            <h3 className="text-2xl md:text-3xl font-bold text-center mb-8 drop-shadow-md bg-gradient-to-r from-white to-[var(--primary-light)] text-transparent bg-clip-text">Select a Date & Time</h3>
             
-            <div className="glass-card-elevated p-2 sm:p-4 lg:p-6 min-h-[800px] flex flex-col border-[var(--border-glass)] relative z-10 transition-transform duration-500 hover:scale-[1.01]">
+            {/* Soft backdrop glow behind calendar */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--glow)] to-[var(--glow-strong)] blur-3xl opacity-50 z-0 rounded-3xl -m-4 mt-12"></div>
+            
+            <div className="glass-card-elevated p-2 sm:p-4 lg:p-6 min-h-[800px] flex flex-col border-[var(--border-glass)] relative z-10 transition-transform duration-500 hover:scale-[1.01] w-full">
               <CalendarEmbed />
             </div>
           </div>
