@@ -9,16 +9,16 @@ export const metadata = {
 
 export default function BookWithJoePage() {
   return (
-    <main className="min-h-screen relative overflow-hidden bg-dark">
+    <main className="min-h-screen relative overflow-hidden bg-dark flex flex-col items-center w-full">
       {/* Animated Background matching the rest of the application */}
-      <div className="bg-animated">
+      <div className="bg-animated w-full h-full absolute inset-0">
         <div className="orb-1" />
         <div className="orb-2" />
         <div className="grid-overlay" />
       </div>
 
       {/* Header */}
-      <header className="relative z-20 w-full glass-card max-w-7xl mx-auto mt-6 px-6 py-4 flex items-center justify-between rounded-3xl mb-12 border border-[var(--border-glass)] shadow-xl">
+      <header className="relative z-20 w-[calc(100%-2rem)] sm:w-[calc(100%-4rem)] max-w-5xl mt-6 px-6 py-4 flex items-center justify-between rounded-3xl mb-12 border border-[var(--border-glass)] shadow-xl glass-card">
         <Link href="/" className="flex items-center gap-4 group transition-transform hover:scale-105">
           <img 
             src="/images/aod-logo.svg" 
@@ -34,25 +34,25 @@ export default function BookWithJoePage() {
       </header>
 
       {/* Main Layout Area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pb-24">
+      <div className="w-full max-w-5xl px-4 sm:px-6 lg:px-8 relative z-10 pb-24 flex flex-col items-center">
         
         {/* Landing Hero Section */}
-        <div className="text-center mb-24 max-w-3xl mx-auto relative mt-8">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight text-white drop-shadow-lg leading-tight">
+        <div className="text-center mb-24 max-w-3xl relative mt-8 flex flex-col items-center">
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-6 tracking-tight text-white drop-shadow-lg leading-tight text-center">
             Schedule Your <br className="md:hidden" /><span className="bg-gradient-to-r from-[var(--primary-light)] to-[var(--primary)] text-transparent bg-clip-text">Strategy Session</span>
           </h1>
-          <p className="text-lg md:text-xl text-[var(--text-secondary)] font-medium max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-[var(--text-secondary)] font-medium max-w-2xl text-center">
             Take the first step toward building a solid financial roadmap with professional guidance tailored to your goals.
           </p>
         </div>
 
         {/* Content Section (Stacked & Centered) */}
-        <div className="flex flex-col items-center gap-20 max-w-4xl mx-auto">
+        <div className="flex flex-col items-center gap-20 w-full max-w-4xl">
           
           {/* Top: Bio & Image */}
-          <div className="w-full mt-12">
+          <div className="w-full mt-12 flex justify-center">
             {/* Image & Name Profile Card */}
-            <div className="glass-card w-full p-6 sm:p-10 md:p-12 flex flex-col items-center">
+            <div className="glass-card w-full p-6 sm:p-10 md:p-12 flex flex-col items-center text-center">
               <div className="w-48 h-48 sm:w-56 sm:h-56 mx-auto mb-6 rounded-full overflow-hidden border-[4px] border-[var(--primary)] shadow-[0_0_40px_rgba(92,157,215,0.4)] relative mt-[-100px] sm:mt-[-120px] bg-[#0a0a0f]">
                 <img 
                   src="/images/joe-wexler.jpg" 
@@ -64,7 +64,7 @@ export default function BookWithJoePage() {
               <h2 className="text-3xl sm:text-4xl font-bold mb-2 text-center text-white tracking-widest leading-none mt-2">JOE WEXLER</h2>
               <p className="text-[var(--primary)] text-center font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-10">Financial Advisor</p>
               
-              <div className="text-[var(--text-secondary)] space-y-6 text-[1.05rem] sm:text-lg leading-relaxed text-center px-2 sm:px-8">
+              <div className="text-[var(--text-secondary)] space-y-6 text-[1.05rem] sm:text-lg leading-relaxed text-center px-2 sm:px-8 w-full max-w-2xl">
                 <p>
                   Knowledge is the key to a successful financial future. My background, experience and commitment to providing you with the resources you need to make financial decisions, can help make your financial future as successful as you need it to be.
                 </p>
@@ -78,13 +78,13 @@ export default function BookWithJoePage() {
           </div>
           
           {/* Bottom: Calendar Embed */}
-          <div className="w-full relative mt-4">
+          <div className="w-full relative mt-4 flex flex-col items-center">
             <h3 className="text-2xl md:text-3xl font-bold text-center mb-8 drop-shadow-md bg-gradient-to-r from-white to-[var(--primary-light)] text-transparent bg-clip-text">Select a Date & Time</h3>
             
             {/* Soft backdrop glow behind calendar */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[var(--glow)] to-[var(--glow-strong)] blur-3xl opacity-50 z-0 rounded-3xl -m-4 mt-12"></div>
+            <div className="absolute top-12 bottom-0 left-0 right-0 bg-gradient-to-r from-[var(--glow)] to-[var(--glow-strong)] blur-3xl opacity-50 z-0 rounded-3xl -m-4"></div>
             
-            <div className="glass-card-elevated p-2 sm:p-4 lg:p-6 min-h-[800px] flex flex-col border-[var(--border-glass)] relative z-10 transition-transform duration-500 hover:scale-[1.01] w-full">
+            <div className="glass-card-elevated p-2 sm:p-4 lg:p-6 min-h-[800px] flex flex-col border-[var(--border-glass)] relative z-10 w-full">
               <CalendarEmbed />
             </div>
           </div>
