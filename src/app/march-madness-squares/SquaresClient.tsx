@@ -116,8 +116,7 @@ export default function SquaresClient({ previewGrids, totalGrids, totalContacts 
             <hr className={styles.rule} />
             <GridDisplay grid={activeGrid} highlightedCell={highlightedCell} />
             <p className={styles.resultMeta}>
-              Group: {activeGrid.primaryGroup}
-              {activeGrid.isMixed ? ' (mixed grid)' : ''}
+              Grid #{activeGrid.gridIndex + 1} of {totalGrids}
             </p>
           </motion.section>
         )}
@@ -172,7 +171,7 @@ export default function SquaresClient({ previewGrids, totalGrids, totalContacts 
           {previewGrids.map((grid) => (
             <div key={grid.gridIndex}>
               <p className={styles.sampleGridLabel}>
-                Grid #{grid.gridIndex + 1} &mdash; {grid.primaryGroup}
+                Grid #{grid.gridIndex + 1}
               </p>
               <GridDisplay grid={grid} highlightedCell={null} />
             </div>
