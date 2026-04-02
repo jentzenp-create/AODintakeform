@@ -10,8 +10,6 @@ interface Submission {
     phone: string;
     email: string;
     business_name: string;
-    passion: string;
-    fun_fact: string;
     goals: string;
     connections: string;
     referrer: string;
@@ -289,6 +287,7 @@ export default function Dashboard() {
                             >
                                 <option value="" style={{ background: '#0a0a0f', color: 'white' }}>All Referrers</option>
                                 <option value="Joe Wexler" style={{ background: '#0a0a0f', color: 'white' }}>Joe Wexler</option>
+                                <option value="Jentzen Pepple" style={{ background: '#0a0a0f', color: 'white' }}>Jentzen Pepple</option>
                                 {submissions
                                     .map(s => s.referrer)
                                     .filter((v, i, a) => v && v !== 'Joe Wexler' && a.indexOf(v) === i)
@@ -366,15 +365,7 @@ export default function Dashboard() {
                                     </div>
                                 )}
 
-                                {sub.passion && (
-                                    <div className="dash-card-section">
-                                        <span className="dash-card-label">Passionate about</span>
-                                        <p
-                                            className="dash-card-value"
-                                            dangerouslySetInnerHTML={{ __html: highlight(sub.passion) }}
-                                        />
-                                    </div>
-                                )}
+
 
                                 {/* Footer */}
                                 <div className="dash-card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -495,15 +486,7 @@ export default function Dashboard() {
 
                             {/* Discovery Answers */}
                             <div className="dash-modal-sections">
-                                <div className="dash-modal-section">
-                                    <h4 className="dash-modal-section-label">🔥 Passionate About</h4>
-                                    <p className="dash-modal-section-text">{selectedSubmission.passion || '—'}</p>
-                                </div>
 
-                                <div className="dash-modal-section">
-                                    <h4 className="dash-modal-section-label">🏆 Fun Fact / Proud Of</h4>
-                                    <p className="dash-modal-section-text">{selectedSubmission.fun_fact || '—'}</p>
-                                </div>
 
                                 <div className="dash-modal-section">
                                     <h4 className="dash-modal-section-label">🎯 Goals</h4>

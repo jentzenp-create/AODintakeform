@@ -93,7 +93,7 @@ async function fallbackQuery(supabase: any, search: string, referrer: string, pa
 
     if (search) {
         query = query.or(
-            `name.ilike.%${search}%,business_name.ilike.%${search}%,email.ilike.%${search}%,passion.ilike.%${search}%,goals.ilike.%${search}%,connections.ilike.%${search}%,referrer.ilike.%${search}%`
+            `name.ilike.%${search}%,business_name.ilike.%${search}%,email.ilike.%${search}%,goals.ilike.%${search}%,connections.ilike.%${search}%,referrer.ilike.%${search}%`
         );
     }
 

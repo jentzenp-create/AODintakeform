@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
 
-        const { referrer, name, phone, email, business_name, passion, fun_fact, goals, connections } = body;
+        const { referrer, name, phone, email, business_name, goals, connections } = body;
 
         // Validate required fields
         if (!referrer || !name || !phone || !email || !business_name) {
@@ -25,8 +25,6 @@ export async function POST(request: NextRequest) {
                     phone,
                     email,
                     business_name,
-                    passion,
-                    fun_fact,
                     goals,
                     connections,
                     submitted_at: new Date().toISOString(),
