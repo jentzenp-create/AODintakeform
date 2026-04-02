@@ -104,12 +104,12 @@ export default function RoundtableAdPage() {
                 filter leads — and it starts here.
               </p>
               <a
-                href="https://aodform.vercel.app"
+                href="https://aodform.vercel.app/book-with-joe"
                 className="rt-btn-primary rt-btn-hero"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Apply Now
+                Book a Call
                 <svg
                   width="16"
                   height="16"
@@ -146,12 +146,12 @@ export default function RoundtableAdPage() {
               <span>Apply If You're Serious.</span>
             </h2>
             <a
-              href="https://aodform.vercel.app"
+              href="https://aodform.vercel.app/book-with-joe"
               className="rt-btn-primary"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Apply Now
+              Book a Call
               <svg
                 width="16"
                 height="16"
