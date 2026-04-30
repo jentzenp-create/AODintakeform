@@ -569,15 +569,39 @@ export default function IntakeForm() {
                 height: 2,
                 background: 'linear-gradient(90deg, transparent, var(--primary), transparent)',
                 marginTop: '0.5rem',
+                marginBottom: '2rem',
+                marginLeft: 'auto',
+                marginRight: 'auto',
               }}
             />
+
+            {/* Roundtable Video */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.1 }}
+              style={{ width: '100%', maxWidth: '500px', margin: '0 auto 2.5rem' }}
+            >
+              <div style={{
+                position: 'relative',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                background: 'rgba(92,157,215,0.04)',
+                border: '1px solid rgba(92,157,215,0.18)',
+                boxShadow: '0 0 0 1px rgba(92,157,215,0.08), 0 20px 40px rgba(0,0,0,0.4)',
+              }}>
+                <video playsInline controls preload="metadata" poster="/video-poster.jpg" style={{ display: 'block', width: '100%', height: 'auto' }}>
+                  <source src="/FiveToSevenRoomExplainer.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </motion.div>
 
             {/* Book a Roundtable CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2 }}
-              style={{ marginTop: '2rem', textAlign: 'center' }}
+              style={{ textAlign: 'center' }}
             >
               <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
                 Ready to take the next step? Join us at a roundtable!
