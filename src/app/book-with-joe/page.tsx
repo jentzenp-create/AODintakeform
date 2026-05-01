@@ -42,7 +42,7 @@ export default function BookWithJoePage() {
             Schedule Your <br className="md:hidden" /><span className="bg-gradient-to-r from-[var(--primary-light)] to-[var(--primary)] text-transparent bg-clip-text">Strategy Session</span>
           </h1>
           <p className="text-lg md:text-xl text-[var(--text-secondary)] font-medium max-w-2xl text-center">
-            Take the first step toward building a solid financial roadmap with professional guidance tailored to your goals.
+            Take the first step toward building a roadmap with professional guidance tailored to your goals.
           </p>
         </div>
 
@@ -61,12 +61,15 @@ export default function BookWithJoePage() {
                 />
               </div>
               
-              <h2 className="text-3xl sm:text-4xl font-bold mb-2 text-center text-white tracking-widest leading-none mt-2">JOE WEXLER</h2>
-              <p className="text-[var(--primary)] text-center font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-10">Financial Advisor</p>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-2 text-center text-white tracking-widest leading-none mt-2">Joe Wexler</h2>
+              <p className="text-[var(--primary)] text-center font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-10">
+                ACRES OF DIAMONDS<br />
+                RESOURCE GROUP, FOUNDER
+              </p>
               
               <div className="text-[var(--text-secondary)] space-y-6 text-[1.05rem] sm:text-lg leading-relaxed text-center px-2 sm:px-8 w-full max-w-2xl">
                 <p>
-                  Knowledge is the key to a successful financial future. My background, experience and commitment to providing you with the resources you need to make financial decisions, can help make your financial future as successful as you need it to be.
+                  Knowledge is the key to a successful future. My background, experience and commitment to providing you with the resources you need to make decisions, can help make your future as successful as you need it to be.
                 </p>
                 <div className="h-px bg-white/10 w-1/3 mx-auto my-8"/>
                 <p>
